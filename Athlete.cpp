@@ -21,6 +21,7 @@ ath::Athlete::Athlete(string inputName, string inputSurname, string inputSport, 
     thisID = ++ID;
 }
 ath::Athlete::~Athlete()
+{
     cout << "Destroyed!" << endl;
 }
 void ath::Athlete::setName(string inputName)
