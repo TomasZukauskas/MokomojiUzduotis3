@@ -5,7 +5,7 @@
 
 using namespace std;
 
-namespace ath
+namespace ATH
 {
     class Athlete
     {
@@ -18,6 +18,7 @@ namespace ath
             static int ID;
             int thisID;
         public:
+            Athlete();
             Athlete(string inputName, string inputSurname, string inputSport, unsigned int inputHeight, unsigned int inputWeight);
             ~Athlete();
             void setName(string inputName);
@@ -30,6 +31,16 @@ namespace ath
             string getSport();
             unsigned int getHeight();
             unsigned int getWeight();
+            friend bool operator< (const Athlete &a1, const Athlete &a2);
+            friend bool operator== (const Athlete &a1, const Athlete &a2);
+            friend bool operator!= (const Athlete &a1, const Athlete &a2);
+            friend bool operator> (const Athlete &a1, const Athlete &a2);
+            friend bool operator<= (const Athlete &a1, const Athlete &a2);
+            friend bool operator>= (const Athlete &a1, const Athlete &a2);
+            Athlete& operator++(); //pre
+            Athlete operator++(int); //post
+            friend ostream& operator<< (ostream& output, const Athlete& a);
+            friend istream& operator>> (istream& input, Athlete& a);
             string toString();
         private:
             bool isName(string name);

@@ -7,136 +7,225 @@
 #include <sstream>
 #include <vector>
 #define DEFAULT "Default"
-#define DEFAULT_0 000
+#define DEFAULT_0 0
 
 using namespace std;
 
-ath::Athlete::Athlete(string inputName, string inputSurname, string inputSport, unsigned int inputHeight, unsigned int inputWeight)
+namespace ATH
 {
-    setName(inputName);
-    setSurname(inputSurname);
-    setSport(inputSport);
-    setHeight(inputHeight);
-    setWeight(inputWeight);
-    thisID = ++ID;
-}
-ath::Athlete::~Athlete()
-{
-    cout << "Destroyed!" << endl;
-}
-void ath::Athlete::setName(string inputName)
-{
-    if(isName(inputName))
+    int Athlete::ID = 0;
+    Athlete::Athlete()
     {
-        name = inputName;
+        setName(DEFAULT);
+        setSurname(DEFAULT);
+        setSport(DEFAULT);
+        setHeight(DEFAULT_0);
+        setWeight(DEFAULT_0);
+        thisID = ++ID;
     }
-    else
+    Athlete::Athlete(string inputName, string inputSurname, string inputSport, unsigned int inputHeight, unsigned int inputWeight)
     {
-        throw DEFAULT;
+        setName(inputName);
+        setSurname(inputSurname);
+        setSport(inputSport);
+        setHeight(inputHeight);
+        setWeight(inputWeight);
+        thisID = ++ID;
     }
-}
-void ath::Athlete::setSurname(string inputSurname)
-{
-    if(isSurname(inputSurname))
+    Athlete::~Athlete()
     {
-        surname = inputSurname;
+        cout << "Destroyed!" << endl;
     }
-    else
+    void Athlete::setName(string inputName)
     {
-        throw DEFAULT;
+        if(isName(inputName))
+        {
+            name = inputName;
+        }
+        else
+        {
+            throw runtime_error ("Wrong name input..");
+        }
     }
-}
-void ath::Athlete::setSport(string inputSport)
-{
-    if(isSport(inputSport))
+    void Athlete::setSurname(string inputSurname)
     {
-        sport = inputSport;
+        if(isSurname(inputSurname))
+        {
+            surname = inputSurname;
+        }
+        else
+        {
+            throw runtime_error ("Wrong surname input..");
+        }
     }
-    else
+    void Athlete::setSport(string inputSport)
     {
-        throw DEFAULT;
+        if(isSport(inputSport))
+        {
+            sport = inputSport;
+        }
+        else
+        {
+            throw runtime_error ("Wrong shoes input..");
+        }
     }
-}
-void ath::Athlete::setHeight(unsigned int inputHeight)
-{
-    height = (inputHeight > 0 && inputHeight <= 250 ? inputHeight : throw DEFAULT_0);
-}
-void ath::Athlete::setWeight(unsigned int inputWeight)
-{
-    weight = (inputWeight > 0 && inputWeight <= 300 ? inputWeight : throw DEFAULT_0);;
-}
-string ath::Athlete::getName()
-{
-    return name;
-}
-string ath::Athlete::getSurname()
-{
-    return surname;
-}
-string ath::Athlete::getSport()
-{
-    return sport;
-}
-unsigned int ath::Athlete::getHeight()
-{
-    return height;
-}
-unsigned int ath::Athlete::getWeight()
-{
-    return weight;
-}
-string ath::Athlete::toString()
-{
-    stringstream athlete;
+    void Athlete::setHeight(unsigned int inputHeight)
+    {
+        if (inputHeight >= 0 && inputHeight <= 250)
+        {
+            height = inputHeight;
+        }
+        else
+        {
+            throw invalid_argument ("Wrong height input..");
+        }
+    }
+    void Athlete::setWeight(unsigned int inputWeight)
+    {
+        if (inputWeight >= 0 && inputWeight <= 300)
+        {
+            weight = inputWeight;
+        }
+        else
+        {
+            throw invalid_argument ("Wrong weight input..");
+        }
+    }
+    string Athlete::getName()
+    {
+        return name;
+    }
+    string Athlete::getSurname()
+    {
+        return surname;
+    }
+    string Athlete::getSport()
+    {
+        return sport;
+    }
+    unsigned int Athlete::getHeight()
+    {
+        return height;
+    }
+    unsigned int Athlete::getWeight()
+    {
+        return weight;
+    }
+    bool operator< (const Athlete &a1, const Athlete &a2)
+    {
+        return a1.height < a2.height && a1.weight < a2.weight;
+    }
+    bool operator== (const Athlete &a1, const Athlete &a2)
+    {
+        return a1.height == a2.height && a1.weight == a2.weight;
+    }
+    bool operator!= (const Athlete &a1, const Athlete &a2)
+    {
+        return !(a1 == a2);
+    }
+    bool operator> (const Athlete &a1, const Athlete &a2)
+    {
+        return !(a1 < a2);
+    }
+    bool operator<= (const Athlete &a1, const Athlete &a2)
+    {
+        return (a1 < a2 || a1 == a2);
+    }
+    bool operator>= (const Athlete &a1, const Athlete &a2)
+    {
+        return (!(a1 < a2) || a1 == a2);
+    }
+    Athlete& Athlete::operator++()
+    {
+        this->weight++;
+        return *this;
+    }
+    Athlete Athlete::operator++(int)
+    {
+        Athlete temp = *this;
+        this->weight++;
+        return temp;
+    }
+    ostream& operator<<(std::ostream& output, const Athlete& a)
+    {
+        output << a.thisID << ". " << a.name << " " << a.surname << " " << a.sport << " player " <<endl;
+        output << "Height: " << a.height << " Weight: " <<  a.weight << endl;
+		return output;
+    }
+    istream& operator>>(std::istream& input, Athlete& a)
+    {
+		string stringInput;
+		int numberInput;
+		cout << "Input name of athlete: ";
+		input >> stringInput;
+		a.setName(stringInput);
+		cout << "Input surname of athlete: ";
+        input >> stringInput;
+		a.setSurname(stringInput);
+		cout << "Input sport of athlete: ";
+        input >> stringInput;
+		a.setSport(stringInput);
+		cout << "Input height of athlete: ";
+        input >> numberInput;
+		a.setHeight(numberInput);
+		cout << "Input weight of athlete: ";
+        input >> numberInput;
+		a.setWeight(numberInput);
 
-    athlete << thisID << ". " << name << " " << surname << " " << sport << " player " <<endl;
-    athlete << "Height: " << height << " Weight: " <<  weight << endl;
+		return input;
+    }
+    string Athlete::toString()
+    {
+        stringstream athlete;
 
-    return athlete.str();
-}
-bool ath::Athlete::isName(string name)
-{
-    for (size_t i = 1; i < name.length(); i++)
+        athlete << thisID << ". " << name << " " << surname << " " << sport << " player " <<endl;
+        athlete << "Height: " << height << " Weight: " <<  weight << endl;
+
+        return athlete.str();
+    }
+    bool Athlete::isName(string name)
     {
-        if (!islower(name[i]))
+        for (size_t i = 1; i < name.length(); i++)
+        {
+            if (!islower(name[i]))
+            {
+                return false;
+            }
+        }
+        if (!isupper(name[0]))
         {
             return false;
         }
+        return true;
     }
-    if (!isupper(name[0]))
+    bool Athlete::isSurname(string surname)
     {
-        return false;
-    }
-    return true;
-}
-bool ath::Athlete::isSurname(string surname)
-{
-    for (size_t i = 1; i < surname.length(); i++)
-    {
-        if (!islower(surname[i]))
+        for (size_t i = 1; i < surname.length(); i++)
+        {
+            if (!islower(surname[i]))
+            {
+                return false;
+            }
+        }
+        if (!isupper(surname[0]))
         {
             return false;
         }
+        return true;
     }
-    if (!isupper(surname[0]))
+    bool Athlete::isSport(string sport)
     {
-        return false;
-    }
-    return true;
-}
-bool ath::Athlete::isSport(string sport)
-{
-    for (size_t i = 1; i < sport.length(); i++)
-    {
-        if (!isalpha(sport[i]))
+        for (size_t i = 1; i < sport.length(); i++)
+        {
+            if (!isalpha(sport[i]))
+            {
+                return false;
+            }
+        }
+        if (sport.length() < 1)
         {
             return false;
         }
+        return true;
     }
-    if (sport.length() < 1)
-    {
-        return false;
-    }
-    return true;
 }
-int ath::Athlete::ID = 0;

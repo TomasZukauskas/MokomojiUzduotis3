@@ -15,48 +15,70 @@ int main()
 {
     try
     {
-        //all methods should be called here
-        ath::Athlete *athlete1 = new ath::Athlete("Stephen", "Curry", "Basketball", 191, 86);
-        ath::Athlete *athlete2 = new ath::Athlete("Yuji", "Nishida", "Volleyball", 186, 88);
-        ath::Athlete *athlete3 = new ath::Athlete("Cristiano", "Ronaldo", "Football", 187, 84);
+        ATH::Athlete a3("Lebron", "James", "Basketball", 206, 113);
+        ATH::Athlete a4("Arvydas", "Sabonis", "Basketball", 221, 132);
+        ATH::Athlete a5("Name", "Surname", "Sport", 206, 113);
 
-        athlete1->setName("Mike");
-        athlete1->setSurname("Trout");
-        athlete1->setSport("Baseball");
-        athlete1->setHeight(188);
-        athlete1->setWeight(107);
-
-        vector<ath::Athlete*> aDynam;
-
-        aDynam.push_back(athlete1);
-        aDynam.push_back(athlete2);
-        aDynam.push_back(athlete3);
-
-        for(size_t i = 0; i < aDynam.size(); ++i)
+        cout << "\nOverloading comparison operator < test.\nValues: " << "a3 | height and weight = " << a3.getHeight() << " | " << a3.getWeight() << ", " << "a4 | height and weight = " << a4.getHeight() << " | " << a4.getWeight() << endl;
+        if (a3 < a4)
         {
-            cout << aDynam[i]->toString() << endl;
+            cout << "(a3 < a4) | TRUE" << endl;
         }
 
-        cout << athlete3->getName() << endl;
-        cout << athlete3->getSurname() << endl;
-        cout << athlete3->getSport() << endl;
-        cout << athlete3->getHeight() << endl;
-        cout << athlete3->getWeight() << endl;
+        cout << "\nOverloading comparison operator == test.\nValues: " << "a3 | height and weight = " << a3.getHeight() << " | " << a3.getWeight() << ", " << "a5 | height and weight = " << a5.getHeight() << " | " << a5.getWeight() << endl;
+        if (a3 == a5)
+        {
+            cout << "(a3 == a5) | HEIGHT AND WEIGHT IS THE SAME " << endl;
+        }
 
-        cout << endl << "To show that id works fine: " << endl << athlete2->toString() << endl;
+        cout << "\nOverloading comparison operator != test.\nValues: " << "a3 | height and weight = " << a3.getHeight() << " | " << a3.getWeight() << ", " << "a4 | height and weight = " << a4.getHeight() << " | " << a4.getWeight() << endl;
+        if (a3 != a4)
+        {
+            cout << "(a3 != a4) | HEIGHT AND WEIGHT IS NOT THE SAME " << endl;
+        }
 
-        ath::Athlete *athlete4 = new ath::Athlete("stephen", "curry", "basketball", 360, 500); // to show that it throws exception
+        cout << "\nOverloading comparison operator > test.\nValues: " << "a4 | height and weight = " << a4.getHeight() << " | " << a4.getWeight() << ", " << "a3 | height and weight = " << a3.getHeight() << " | " << a3.getWeight() << endl;
+        if (a4 > a3)
+        {
+            cout << "(a4 > a3) TRUE" << endl;
+        }
 
-        cout << athlete4->toString() << endl;
+        cout << "\nOverloading comparison operator <= test.\nValues: " << "a3 | height and weight = " << a3.getHeight() << " | " << a3.getWeight() << ", " << "a5 | height and weight = " << a5.getHeight() << " | " << a5.getWeight() << endl;
+        if (a3 <= a5)
+        {
+            cout << "(a3 <= a5) TRUE" << endl;
+        }
 
-        delete athlete1;
-        delete athlete2;
-        delete athlete3;
+        cout << "\nOverloading comparison operator >= test.\nValues: " << "a4 | height and weight = " << a4.getHeight() << " | " << a4.getWeight() << ", " << "a5 | height and weight = " << a5.getHeight() << " | " << a5.getWeight() << endl;
+        if (a4 >= a5)
+        {
+            cout << "(a4 >= a5) TRUE" << endl;
+        }
+
+        cout << "\nInitial values: a5 weight = " << a5.getWeight() << ", a3 weight = " << a3.getWeight() << endl;
+        a5 = a3++;
+        cout << "(a5 = a3++) | " << a5.getWeight() << " | " << a3.getWeight() << endl;
+        a5 = ++a3;
+        cout << "(a5 = ++a3) | " << a5.getWeight() << " | " << a3.getWeight() << endl << endl;
+
+        ATH::Athlete a1, a2;
+        cin >> a1;
+        cin >> a2;
+        cout << endl << a1 << endl;
+        cout << a2 << endl;
 
         return 0;
     }
+    catch (invalid_argument &error)
+        {
+            cerr << "Error while trying to input athlete: " << error.what() << endl;
+        }
+    catch (runtime_error &error)
+        {
+            cerr << "Error while trying to input athlete: " << error.what() << endl;
+        }
     catch(...)                  //In order to handle the error
     {
-        cout << "ERROR: wrong input!";
+        cerr << "Unknown exeption occured.";
     }
 }
